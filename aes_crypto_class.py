@@ -13,24 +13,17 @@ class Mycrpto:
         self.EncodeAES = lambda c, s: base64.b64encode(c.encrypt(self.pad(s)))
         self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING)
 
+        self.key = "ruiY1byeJux5zcCDrV9I/Q=="
+        self.secret = base64.b64decode(self.key)
+
     def enc(self, pure_data):
-        secret = os.urandom(self.BLOCK_SIZE)
-        cipher = AES.new(secret)
-
+        cipher = AES.new(self.secret)
         encryp_data = self.EncodeAES(cipher, pure_data)
-
-        f = open("key.txt", 'w')
-        f.write(secret)
-        f.close()
 
         return encryp_data
 
     def dec(self, encryp_data):
-        f = open("key.txt", "r")
-        key = f.read()
-        f.close()
-
-        cipher = AES.new(key)
+        cipher = AES.new(self.secret)
 
         decryp_data = self.DecodeAES(cipher, encryp_data)
         return decryp_data
