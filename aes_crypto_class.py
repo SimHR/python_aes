@@ -4,7 +4,7 @@ import os
 
 
 class Mycrpto:
-    def __init__(self):
+    def __init__(self, key='ruiY1byeJux5zcCDrV9I/Q=='):
         # type: () -> object
         self.BLOCK_SIZE = 16
         self.PADDING = '0'
@@ -13,7 +13,7 @@ class Mycrpto:
         self.EncodeAES = lambda c, s: base64.b64encode(c.encrypt(self.pad(s)))
         self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING)
 
-        self.key = "ruiY1byeJux5zcCDrV9I/Q=="
+        self.key = key
         self.secret = base64.b64decode(self.key)
 
     def enc(self, pure_data):
@@ -29,11 +29,25 @@ class Mycrpto:
         return decryp_data
 
 
+data = raw_input("Please input any text: ")
+
+# encrypt with default secret key
 crypto = Mycrpto()
 
-data = raw_input("Please input any text:")
 enc_data = crypto.enc(data)
 print "Encrypted data:", enc_data
 
 dec_data = crypto.dec(enc_data)
+print "Decrypted data:", dec_data
+
+
+# encrypt with custom secret key
+secret_key = 'this is the key!'
+base64_encoded_key = base64.b64encode(secret_key)
+crypto2 = Mycrpto(base64_encoded_key)
+
+enc_data = crypto2.enc(data)
+print "Encrypted data:", enc_data
+
+dec_data = crypto2.dec(enc_data)
 print "Decrypted data:", dec_data
